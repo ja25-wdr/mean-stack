@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mean-server-node
+  labels:
+    app: mean-server-node  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mean-server-node 
+  template:
+    metadata:
+      labels:
+        app: mean-server-node
+    spec:
+      containers:
+        - name: mean-server-node
+          image: localhost:32000/node-server:local
+          ports:
+            - containerPort: 5200
+          env:
+            - name: ATLAS_URI
+              value: "mongodb://mongodb-service.default.svc.cluster.local:27017/mean-db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mean-server-node
+spec:
+  selector:
+    app: mean-server-node
+  type: NodePort  
+  ports:
+    - protocol: TCP
+      port: 5200
+      targetPort: 5200

@@ -1,0 +1,29 @@
+services:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+  server:
+    build: ./server
+    ports:
+       - "5200:5200"
+    environment:
+      - ATLAS_URI=mongodb://mongodb/mean-db
+    volumes:
+      - logs:/app/logs
+      - ./server:/app
+      - /app/node_modules
+#    network_mode: host
+#    depends_on:
+#      - mongodb
+  client:
+    build: ./client
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./client/src:/app/src
+    depends_on:
+      - server
+volumes:
+  data:
+  logs:
