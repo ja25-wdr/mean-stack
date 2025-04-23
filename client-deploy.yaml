@@ -1,37 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mean-client-angular
+  name: mean-client-ang
   labels:
-    app: mean-client-angular
+    app: mean-client-ang
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mean-client-angular
+      app: mean-client-ang
   template:
     metadata:
       labels:
-        app: mean-client-angular
+        app: mean-client-ang
     spec:
       containers:
-        - name: mean-client-angular
-          image: localhost:32000/mean-client-angular:local
+        - name: mean-client-ang
+          image: localhost:32000/mean-client-angula:local
           ports:
             - containerPort: 4200
-          env:
-            - name: API_URL
-              value: 'http://10.152.183.54:5200'
----
+          # env:
+          #   - name: API_URL
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         key: api_url
+          #         name: econfigmap
+
+--- 
 apiVersion: v1
 kind: Service
 metadata:
-  name: mean-client-angular
+  name: mean-client-ang
 spec:
   selector:
-    app: mean-client-angular
+    app: mean-client-ang
   type: NodePort
   ports:
     - protocol: TCP
       port: 4200
       targetPort: 4200
+

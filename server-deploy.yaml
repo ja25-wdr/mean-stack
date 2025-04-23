@@ -16,12 +16,16 @@ spec:
     spec:
       containers:
         - name: mean-server-node
-          image: localhost:32000/node-server:local
+          image: localhost:32000/mean-server-node:local
           ports:
             - containerPort: 5200
           env:
             - name: ATLAS_URI
-              value: "mongodb://mongodb-service.default.svc.cluster.local:27017/mean-db"
+              valueFrom:
+                configMapKeyRef:
+                  name: mean-configmap
+                  key: atlas_uri
+
 ---
 apiVersion: v1
 kind: Service
@@ -35,3 +39,13 @@ spec:
     - protocol: TCP
       port: 5200
       targetPort: 5200
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mean-configmap
+data:
+  # api_url: "http://mean-server-node.default.svc.cluster.local:5200"
+  atlas_uri: "mongodb://mongodb-service.default.svc.cluster.local:27017/mean-db"

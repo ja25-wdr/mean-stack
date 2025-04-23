@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "build": "ng build --poll 100",
+    "watch": "ng build --watch --configuration development --poll 100",
     "serve:ssr:client": "node dist/client/server/server.mjs"
   },
   "private": true,
